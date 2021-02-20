@@ -96,6 +96,10 @@ form.onsubmit = function (event) {
     editing.querySelector(".secondName").innerHTML = form.secondName.value;
 
     editing = null;
+
+    form.onreset = function () {
+      editing = null;
+    };
   } else {
     addOsoba(form.firstName.value, form.secondName.value);
   }
@@ -103,4 +107,45 @@ form.onsubmit = function (event) {
   form.firstName.value = form.secondName.value = "";
   form.firstName.focus();
   event.preventDefault();
+};
+
+//filtrowanie
+document.getElementById("showgt5").onclick = function () {
+  for (let li of ul.children) {
+    li.hidden = parseInt(li.querySelector(".likes").innerHTML) <= 5; //? dziwny zapis
+  }
+
+  document.getElementById("showall").onclick = function () {
+    for (let li of ul.children) {
+      li.hidden = false;
+    }
+  };
+};
+
+//sorting
+document.getElementById("sortI").onclick = function () {
+  let list = Array.from(ul.children);
+
+  list.sort((li1, li2) => {
+    let im1 = li1.querySelector(".firstName").innerHTML;
+    let im2 = li2.querySelector(".firstName").innerHTML;
+    return im1.localeCompare(im2);
+  });
+  for (let li of list) {
+    ul.appendChild(li);
+  }
+};
+
+document.getElementById("sortN").onclick = function () {
+  let list = Array.from(ul.children);
+
+  list.sort((li1, li2) => {
+    let nz1 = li1.querySelector(".secondName").innerHTML;
+    let nz2 = li2.querySelector(".secondName").innerHTML;
+    return nz1.localeCompare(nz2);
+  });
+
+  for (let li of list) {
+    ul.appendChild(li);
+  }
 };
