@@ -53,16 +53,19 @@ function addOsoba(firstName, secondName, likes = 0) {
 
   li.append(" ", plus, " ", minus);
 
+  // + like
   plus.onclick = function (event) {
     let likes = parseInt(spanL.innerHTML);
     spanL.innerHTML = ++likes;
   };
 
+  // - like
   minus.onclick = function (event) {
     let likes = parseInt(spanL.innerHTML);
     spanL.innerHTML = --likes;
   };
 
+  // delete
   let del = document.createElement("button");
   del.innerHTML = "Usuń";
   li.append(" ", del);
@@ -70,12 +73,33 @@ function addOsoba(firstName, secondName, likes = 0) {
   del.onclick = function (event) {
     li.remove();
   };
+
+  //edit
+  let edit = document.createElement("button");
+  edit.innerHTML = "Edytuj";
+  li.append(" ", edit);
+
+  edit.onclick = function (event) {
+    form.firstName.value = li.querySelector(".firstName").innerHTML;
+    form.secondName.value = li.querySelector(".secondName").innerHTML;
+    editing = li; //od razu ustawia zmeinną jako element ??
+  };
 }
 
 const form = document.getElementById("form-osoba");
 
+let editing = null;
+
 form.onsubmit = function (event) {
-  addOsoba(form.firstName.value, form.secondName.value);
+  if (editing) {
+    editing.querySelector(".firstName").innerHTML = form.firstName.value;
+    editing.querySelector(".secondName").innerHTML = form.secondName.value;
+
+    editing = null;
+  } else {
+    addOsoba(form.firstName.value, form.secondName.value);
+  }
+
   form.firstName.value = form.secondName.value = "";
   form.firstName.focus();
   event.preventDefault();
